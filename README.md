@@ -1,1 +1,3 @@
-# devplatform
+# Dev Platform
+
+Clone this repo

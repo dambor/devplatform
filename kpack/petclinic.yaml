@@ -1,0 +1,15 @@
+apiVersion: build.pivotal.io/v1alpha1
+kind: Image
+metadata:
+  name: petclinic
+spec:
+  tag: glenioborges/petclinic
+  serviceAccount: kpack-service-account
+  cacheSize: "1.5Gi"
+  builder:
+    name: default
+    kind: ClusterBuilder
+  source:
+    git:
+      url: https://github.com/dambor/spring-petclinic
+      revision: master

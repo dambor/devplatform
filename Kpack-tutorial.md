@@ -15,6 +15,7 @@ kubectl get pods --namespace kpack --watch
 ```
 
 3. Create a ClusterBuilder resource. A ClusterBuilder is a reference to a Cloud Native Buildpacks builder image. The Builder image contains buildpacks that will be used to build images with kpack. We recommend starting with the cloudfoundry/cnb:bionic image which has support for Java, Node and Go.
+
 ```
 apiVersion: build.pivotal.io/v1alpha1
 kind: ClusterBuilder
@@ -47,7 +48,7 @@ kubectl describe clusterbuilder default
 apiVersion: v1
 kind: Secret
 metadata:
-  name: tutorial-registry-credentials
+  name: registry-credentials
   annotations:
     build.pivotal.io/docker: <registry-prefix>
 type: kubernetes.io/basic-auth
@@ -59,7 +60,7 @@ stringData:
 2. Apply that credential to the cluster
 
 ```
-kubectl apply -f secret.yaml
+kubectl apply -f registry-credentials.yaml
 ```
 
 3. Create a service account that references the registry secret created above
@@ -67,9 +68,9 @@ kubectl apply -f secret.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
- name: tutorial-service-account
+ name: kpack-service-account
 secrets:
- - name: tutorial-registry-credentials
+ - name: registry-credentials
 ```
 4. Apply that service account to the cluster
 
@@ -90,18 +91,18 @@ Create an image configuration:
 apiVersion: build.pivotal.io/v1alpha1
 kind: Image
 metadata:
-  name: tutorial-image
+  name: petclinic
 spec:
-  tag: <DOCKER-IMAGE>
-  serviceAccount: tutorial-service-account
+  tag: glenioborges/petclinic
+  serviceAccount: kpack-service-account
   cacheSize: "1.5Gi"
   builder:
     name: default
     kind: ClusterBuilder
   source:
     git:
-      url: https://github.com/spring-projects/spring-petclinic
-      revision: 82cb521d636b282340378d80a6307a08e3d4a4c4
+      url: https://github.com/dambor/spring-petclinic
+      revision: master
 ```
 Make sure to replace <DOCKER-IMAGE> with the registry you configured in step #2. Something like: your-name/app or gcr.io/your-project/app
 If you are using your application source, replace source.git.url & source.git.revision.

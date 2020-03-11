@@ -6,6 +6,8 @@
 kubectl apply  --filename release-<version>.yaml
 ```
 
+kubectl apply --filename https://github.com/pivotal/kpack/releases/download/v0.0.6/release-0.0.6.yaml
+
 2. Ensure that the kpack controller & webhook have a status of Running using kubectl get.
 
 ```

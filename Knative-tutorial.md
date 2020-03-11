@@ -1,63 +1,87 @@
 # KNative
 
-## Installing Knative
 
-The following commands install all available Knative components. To customize your Knative installation, see Performing a Custom Knative Installation.
+The following commands install the Knative Serving component.
 
-1. To install Knative, first install the CRDs by running the kubectl apply command once with the -l knative.dev/crd-install=true flag. This prevents race conditions during the install, which cause intermittent errors:
-
-```
-kubectl apply --selector knative.dev/crd-install=true \
---filename https://github.com/knative/serving/releases/download/v0.12.0/serving.yaml \
---filename https://github.com/knative/eventing/releases/download/v0.12.0/eventing.yaml \
---filename https://github.com/knative/serving/releases/download/v0.12.0/monitoring.yaml
-```
-
-
-2. To complete the install of Knative and its dependencies, run the kubectl apply command again, this time without the --selector flag, to complete the install of Knative and its dependencies:
+1. Install the Custom Resource Definitions (aka CRDs):
 
 ```
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.12.0/serving.yaml \
---filename https://github.com/knative/eventing/releases/download/v0.12.0/eventing.yaml \
---filename https://github.com/knative/serving/releases/download/v0.12.0/monitoring.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.13.0/serving-crds.yaml
+```
+2. Install the core components of Serving (see below for optional extensions):
+
+```
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.13.0/serving-core.yaml
 ```
 
-3. Monitor the Knative components until all of the components show a STATUS of Running:
+# Install Contour
+
+The following commands install Contour and enable its Knative integration.
+
+1. Install a properly configured Contour:
+
+```
+kubectl apply --filename https://github.com/knative/net-contour/releases/download/v0.13.0/contour.yaml
+```
+
+2. Install the Knative Contour controller:
+
+```
+kubectl apply --filename https://github.com/knative/net-contour/releases/download/v0.13.0/net-contour.yaml
+```
+
+3. To configure Knative Serving to use Contour by default:
+
+```
+kubectl patch configmap/config-network \
+      --namespace knative-serving \
+      --type merge \
+      --patch '{"data":{"ingress.class":"contour.ingress.networking.knative.dev"}}'
+```
+
+4. Fetch the External IP or CNAME:
+
+```
+kubectl --namespace contour-external get service envoy
+```
+
+Save this for configuring DNS below.
+
+# Configure DNS
+
+
+1. To configure DNS for Knative, take the External IP or CNAME from setting up networking, and configure it with your DNS provider as follows:
+
+* If the networking layer produced an External IP address, then configure a wildcard A record for the domain:
+
+```
+# Here knative.example.com is the domain suffix for your cluster
+*.knative.example.com == A 35.233.41.212
+```
+
+* If the networking layer produced a CNAME, then configure a CNAME record for the domain:
+
+```
+# Here knative.example.com is the domain suffix for your cluster
+*.knative.example.com == CNAME a317a278525d111e89f272a164fd35fb-1510370581.eu-central-1.elb.amazonaws.com
+```
+
+2. Once your DNS provider has been configured, direct Knative to use that domain:
+
+```
+# Replace knative.example.com with your domain suffix
+kubectl patch configmap/config-domain \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"knative.example.com":""}}'
+```
+
+3. Monitor the Knative components until all of the components show a STATUS of Running or Completed:
 
 ```
 kubectl get pods --namespace knative-serving
-kubectl get pods --namespace knative-eventing
-kubectl get pods --namespace knative-monitoring
 ```
 
-4. Configuring DNS
-
-Knative dispatches to different services based on their hostname, so it greatly simplifies things to have DNS properly configured. For this, we must look up the external IP address that istio-ingressgateway received. This can be done with the following command:
-
-```
-$ kubectl get svc -nistio-system
-NAME                    TYPE           CLUSTER-IP   EXTERNAL-IP    PORT(S)                                      AGE
-cluster-local-gateway   ClusterIP      10.0.2.216   <none>         15020/TCP,80/TCP,443/TCP                     2m14s
-istio-ingressgateway    LoadBalancer   10.0.2.24    34.83.80.117   15020:32206/TCP,80:30742/TCP,443:30996/TCP   2m14s
-istio-pilot             ClusterIP      10.0.3.27    <none>         15010/TCP,15011/TCP,8080/TCP,15014/TCP       2m14s
-```
-
-This external IP can be used with your DNS provider with a wildcard A record; however, for a basic functioning DNS setup (not suitable for production!) this external IP address can be used with xip.io in the config-domain ConfigMap in knative-serving. You can edit this with the following command:
-
-```kubectl edit cm config-domain --namespace knative-serving```
-
-Given the external IP above, change the content to:
-```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: config-domain
-  namespace: knative-serving
-data:
-  # xip.io is a "magic" DNS provider, which resolves all DNS lookups for:
-  # *.{ip}.xip.io to {ip}.
-  34.83.80.117.xip.io: ""
-```
 ## Sample Application: Deploying SpringBoot on Knative
 
 ### Configuring your deployment

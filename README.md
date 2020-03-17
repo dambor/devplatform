@@ -6,4 +6,5 @@ This tutorial will guide you through a platform configuration on top of a Kubern
 
 * [Create a cluster using TMC CLI](https://github.com/dambor/devplatform/blob/master/tmc-tutorial.md)
 * [Install knative](https://github.com/dambor/devplatform/blob/master/knative-tutorial.md)
+* [Deploy a sample app]
 * [Install kpack](https://github.com/dambor/devplatform/blob/master/kpack-tutorial.md)

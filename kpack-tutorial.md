@@ -22,7 +22,7 @@ kind: ClusterBuilder
 metadata:
   name: default
 spec:
-  image: cloudfoundry/cnb:bionic
+  image: cloudfoundry/cnb:0.0.55-bionic
 ```
 
 4. Apply the ClusterBuilder yaml to the cluster

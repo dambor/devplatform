@@ -100,10 +100,10 @@ spec:
   source:
     git:
       url: https://github.com/<YOUR-GITHUB>/spring-petclinic
-      revision: master
+      revision: 7387637a4d9d271ea6de0c884e8877e8b176d650
 ```
 Make sure to replace the <tag> with the registry you configured in step #2. Something like: your-name/app or gcr.io/your-project/app
-If you are using your application source, replace source.git.url & source.git.revision.
+If you are using your application source, replace source.git.url & source.git.revision. You can check your application review using `git rev-parse HEAD` command.
 
 6. Apply that image to the cluster
 

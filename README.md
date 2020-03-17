@@ -8,16 +8,20 @@ Below a picture of what we're going to implement:
 
 ![petclinic](https://github.com/dambor/devplatform/blob/master/png/architecture.jpg)
 
-Before we get started, clone this repo to your workspace.
+## Initial Consideration
 
-Deploying the Technology Stack
+* Before we get started, clone this repo to your workspace.
+* In order to have a reliable and reproducible tutorial the original projects scripts were saved on this repo so it doesn't get affected by global changes.
+
+
+## Deploying the Technology Stack
 
 * [Create a cluster using TMC CLI](https://github.com/dambor/devplatform/blob/master/tmc-tutorial.md)
 * [Install knative](https://github.com/dambor/devplatform/blob/master/knative-tutorial.md)
 * [Install kpack](https://github.com/dambor/devplatform/blob/master/kpack-tutorial.md)
 * [Install ArgoCD](https://github.com/dambor/devplatform/blob/master/argocd-tutorial.md)
 
-Configuring DevOps Environment
+## Configuring DevOps Environment
 
 * [Deploy an Image](https://github.com/dambor/devplatform/blob/master/deploy-image.md)
 * [Configuring ArgoCD GitOps Pipeline]()

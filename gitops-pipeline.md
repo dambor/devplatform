@@ -35,3 +35,21 @@ argocd app create petclinic \
 3. Login to the ArgoCD web interface and check the status of your pipeline. It should link similar to the one below:
 
 ![argocd-pipe](https://github.com/dambor/devplatform/blob/master/png/argocd-pipeline.png)
+
+4. On your Knative deployment check the revision applied:
+
+```
+kn revision list
+NAME                  SERVICE         TRAFFIC   TAGS   GENERATION   AGE     CONDITIONS   READY   REASON
+petclinic-8rdjp       petclinic       100%             1            29m     3 OK / 4     True
+```
+
+```
+kubectl get ksvc
+NAME            URL                                                LATESTCREATED         LATESTREADY           READY   REASON
+petclinic       http://petclinic.default.knative.gdambor.com       petclinic-8rdjp       petclinic-8rdjp       True
+```
+5. Access the application on a browser (cold start for spring app should take about 15 seconds):
+
+![petclinic](https://github.com/dambor/devplatform/blob/master/png/petclinic.png)
+

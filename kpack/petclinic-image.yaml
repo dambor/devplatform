@@ -12,4 +12,4 @@ spec:
   source:
     git:
       url: https://github.com/dambor/spring-petclinic
-      revision: master
+      revision: 7387637a4d9d271ea6de0c884e8877e8b176d650

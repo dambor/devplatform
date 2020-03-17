@@ -1,17 +1,17 @@
 # KNative
 
 
-The following commands install the Knative Serving component.
+The following commands install the Knative Serving component. This demo doesn't include the Eventing component.
 
 1. Install the Custom Resource Definitions (aka CRDs):
 
 ```
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.13.0/serving-crds.yaml
+kubectl apply --filename knative-serving/serving-crds.yaml
 ```
 2. Install the core components of Serving (see below for optional extensions):
 
 ```
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.13.0/serving-core.yaml
+kubectl apply --filename knative-serving/serving-core.yaml
 ```
 
 # Install Contour
@@ -21,13 +21,13 @@ The following commands install Contour and enable its Knative integration.
 1. Install a properly configured Contour:
 
 ```
-kubectl apply --filename https://github.com/knative/net-contour/releases/download/v0.13.0/contour.yaml
+kubectl apply --filename contour/contour.yaml
 ```
 
 2. Install the Knative Contour controller:
 
 ```
-kubectl apply --filename https://github.com/knative/net-contour/releases/download/v0.13.0/net-contour.yaml
+kubectl apply --filename contour/net-contour.yaml
 ```
 
 3. To configure Knative Serving to use Contour by default:

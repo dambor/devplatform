@@ -27,3 +27,10 @@ Configuring DevOps Environment
 * [KPack](https://github.com/pivotal/kpack)
 * [KNative](https://knative.dev/docs/)
 * [ArgoCD](https://github.com/argoproj/argo-cd)
+
+## Roadmap
+
+For the next release, we'll be including
+
+* Harbor Registry for Docker Images repository
+* Include Tekton for implementing a full Continuous Integration

@@ -2,7 +2,7 @@
 
 ## What we're building
 
-In this tutorial we'll build a dev platform leveraging KPack, ArgoCD and Knative deployed on top of a Kubernetes Cluster version 1.17 provided by Tanzu Kubernetes Grid (TKG) created and managed by Tanzu Mission Control (TMC). And for now we're using external tools such as Github and DockerHub.
+In this tutorial we'll build a dev platform for learning purposes, leveraging KPack, ArgoCD and Knative deployed on top of a Kubernetes Cluster version 1.17 provided by Tanzu Kubernetes Grid (TKG) created and managed by Tanzu Mission Control (TMC). And for now we're using external tools such as Github and DockerHub.
 
 Below a picture of what we're going to implement:
 

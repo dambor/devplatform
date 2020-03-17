@@ -103,7 +103,7 @@ tmc cluster create -n knative -q 2 -r us-east-1 -g <YOUR-CLUSTER-GROUP>
 ➜  ~ kubectl get all -A
 ```
 
-## Additional configurations
+## Additional REQUIRED configurations
 
 1. After creating a Cluster on TMC, you must apply the following policies:
 

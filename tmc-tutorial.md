@@ -128,11 +128,9 @@ kubectl create clusterrolebinding privileged-cluster-role-binding \
     --group=system:authenticated
 ```
 
+## Appendix
 
-
-1. Creating a cluster
-
-If you are using VMware Tanzu Mission Control to create clusters in AWS, we would like you to grant Tanzu Mission Control slightly more permission in your account using the instructions below. When you registered your AWS account with Tanzu Mission Control, you ran an AWS CloudFormation script to create an IAM role that grants us permission to manage clusters in your account. As part of an effort to harden the security of your clusters, Tanzu Mission Control will start using the AWS Secrets Manager to configure your clusters. Therefore, we need to update our role to grant access to the AWS Secrets Manager to perform CreateSecret, DeleteSecret, GetSecretValue and TagResource operations.
+In case you're facing any issue creating the cluster you should grant Tanzu Mission Control slightly more permission in your AWS account using the instructions below. When you registered your AWS account with Tanzu Mission Control, you ran an AWS CloudFormation script to create an IAM role that grants us permission to manage clusters in your account. As part of an effort to harden the security of your clusters, Tanzu Mission Control will start using the AWS Secrets Manager to configure your clusters. Therefore, we need to update our role to grant access to the AWS Secrets Manager to perform CreateSecret, DeleteSecret, GetSecretValue and TagResource operations.
 If you are interested in the details, you can see the upstream change to Cluster API to use the secrets manager.
 https://github.com/kubernetes-sigs/cluster-api-provider-aws/pull/1490
 Please note: Once we update Tanzu Mission Control with this change, currently scheduled for Thursday, February 13th, you will not be able to create new clusters or create new nodepools unless you follow the instructions below.

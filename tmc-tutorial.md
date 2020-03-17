@@ -1,15 +1,24 @@
-# TMC
+# Tanzu Mission Control
+
+In this tutorial we're going to demonstrate how to login to Tanzu Mission Control and create a Kubernetes cluster on AWS both using the TMC Command Line Interface.
+
+## TMC Login
 
 1. Login to the tmc 
 
-`➜  ~ tmc login
+```
+➜  ~ tmc login
 ℹ To fetch an API token visit https://console.cloud.vmware.com/csp/gateway/portal/#/user/tokens
-✔ API token: █`
+✔ API token: 
+```
 
+2. Give a name to your context:
 
 ```
 ✔ Login context name:
 ```
+
+3. Select the log level:
 
 ```
 ? Select default log level  [Use arrows to move, type to filter]
@@ -19,9 +28,13 @@
 > info
   debug
 ```
+4. Choose your credential:
+
 ```
 ? Select default credential  [Use arrows to move, type to filter]
 ```
+5. Choose the region you want your cluster to be deployed:
+
 ```
 ? Select default region  [Use arrows to move, type to filter]
 > us-east-1
@@ -32,16 +45,19 @@
   eu-central-1
   ap-southeast-1
 ```
-
+6. Select the AWS SSH key:
 ```
 ? Select default AWS SSH key  [Use arrows to move, type to filter]
 > tmc-key-pair
 ```
-
+7. You should see the message below:
 
 ```
 ✔ Successfully created context "dambor", to manage your contexts run `tmc system context -h`
 ````
+## Creating a Kubernetes cluster
+
+1. Creating a cluster using the wizard
 
 ```
 # create a cluster with the wizard
@@ -62,36 +78,55 @@
 
 ```
 
-Or if you prefer to use the default values you can just:
+2. Or if you prefer you can use a single line command:
 
 ```
-tmc cluster create -n knative -q 2 -r us-east-1
+tmc cluster create -n knative -q 2 -r us-east-1 -g <YOUR-CLUSTER-GROUP>
 ```
-
+3. At the end of the cluster creation you should be able to see this output:
 
 ```
 ➜  ~ tmc cluster list | grep knative
   knative                        dambor                    AWS_EC2         PROVISIONED  READY     HEALTHY       tmc.cloud.vmware.com/creator:gborges_pivotal.io
 ```
+## Accessing the cluster created:
 
-Downloading the kubeconfig 
+1. Download the kubeconfig to a file:
 
 ```
-➜  ~ tmc cluster provisionedcluster kubeconfig get knative > ~/.kube/config
+➜  ~ tmc cluster provisionedcluster kubeconfig get knative > /FILE_PATH/kubeconfig-knative.yml
+```
+2. Export the KUBECONFIG variable:
+
+```
+export KUBECONFIG=/FILE_PATH/kubeconfig-knative.yml
+kubectl cluster-info
 ```
 
-You can see all the cluster elements:
+3. You are now logged into the the cluster and can see all resources with the following command:
 
 ```
 ➜  ~ kubectl get all -A
 ```
 
-```
-export KUBECONFIG=/Users/gborges/Desktop/kubeconfig-knative.yml
-kubectl cluster-info
-```
+## Additional configurations
 
+1. After creating a Cluster on TMC, you must apply the following policies:
 
+A restrictive pod security policy (https://kubernetes.io/docs/concepts/policy/pod-security-policy/) by default on Kubernetes clusters provisioned through Tanzu Mission Control. This policy will prevent the usage of privileged options in your containers like running the container as root, using privileged mode, hostPath volume mounts, hostNetwork and privileged Linux capabilities. This is done to keep your Kubernetes clusters secure by default.
+With that said, some of you might want to use some of these privileged options in your pods. In order to make it easier to use them, we also have a privileged pod security policy. To enable this for a specific pod, you can give the service account it uses the permission to use the privileged pod security policy using the following command:
+
+```
+kubectl create rolebinding privileged-role-binding \
+    --clusterrole=vmware-system-tmc-psp-privileged \
+    --user=system:serviceaccount:<namespace>:<service-account>
+```
+To enable it for the entire cluster, you can use the following command:
+```
+kubectl create clusterrolebinding privileged-cluster-role-binding \
+    --clusterrole=vmware-system-tmc-psp-privileged \
+    --group=system:authenticated
+```
 
 
 
@@ -207,20 +242,5 @@ Show less
 
 
 
-2. After creating a Cluster on TMC, you must apply the following policies:
 
-A restrictive pod security policy (https://kubernetes.io/docs/concepts/policy/pod-security-policy/) by default on Kubernetes clusters provisioned through Tanzu Mission Control. This policy will prevent the usage of privileged options in your containers like running the container as root, using privileged mode, hostPath volume mounts, hostNetwork and privileged Linux capabilities. This is done to keep your Kubernetes clusters secure by default.
-With that said, some of you might want to use some of these privileged options in your pods. In order to make it easier to use them, we also have a privileged pod security policy. To enable this for a specific pod, you can give the service account it uses the permission to use the privileged pod security policy using the following command:
-
-```
-kubectl create rolebinding privileged-role-binding \
-    --clusterrole=vmware-system-tmc-psp-privileged \
-    --user=system:serviceaccount:<namespace>:<service-account>
-```
-To enable it for the entire cluster, you can use the following command:
-```
-kubectl create clusterrolebinding privileged-cluster-role-binding \
-    --clusterrole=vmware-system-tmc-psp-privileged \
-    --group=system:authenticated
-```
 

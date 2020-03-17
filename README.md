@@ -1,6 +1,6 @@
 # Dev Platform
 
-![petclinic](https://github.com/dambor/devplatform/blob/master/png/architecture.png)
+![petclinic](https://github.com/dambor/devplatform/blob/master/png/architecture.jpg)
 
 Clone this repo
 

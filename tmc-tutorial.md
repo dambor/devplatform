@@ -91,19 +91,13 @@ tmc cluster create -n knative -q 2 -r us-east-1 -g <YOUR-CLUSTER-GROUP>
 ```
 ## Accessing the cluster created:
 
-1. Download the kubeconfig to a file:
+1. Get the cluster configuration content to your local kubeconfig file:
 
 ```
-➜  ~ tmc cluster provisionedcluster kubeconfig get knative > /FILE_PATH/kubeconfig-knative.yml
-```
-2. Export the KUBECONFIG variable:
-
-```
-export KUBECONFIG=/FILE_PATH/kubeconfig-knative.yml
-kubectl cluster-info
+➜  ~ tmc cluster provisionedcluster kubeconfig get knative > ~/.kube/config
 ```
 
-3. You are now logged into the the cluster and can see all resources with the following command:
+2. You are now logged into the the cluster and can see all resources with the following command:
 
 ```
 ➜  ~ kubectl get all -A

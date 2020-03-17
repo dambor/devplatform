@@ -10,6 +10,6 @@ This tutorial will guide you through a platform configuration on top of a Kubern
 * [Install ArgoCD](https://github.com/dambor/devplatform/blob/master/argocd-tutorial.md)
 
 
-* [Deploy a sample app](https://github.com/dambor/devplatform/blob/master/deploying-sample-app.md)
+* [Deploy a sample app](https://github.com/dambor/devplatform/blob/master/deploying-sample-app.md) 
 * [Deploy an Image](https://github.com/dambor/devplatform/blob/master/deploy-image.md)
 * [Configuring ArgoCD GitOps Pipeline]()

@@ -17,4 +17,4 @@ argocd app create petclinic \
 --directory-recurse --sync-policy automated
 ```
 
-![argocd-pipe](image.jpg)
+![argocd-pipe](https://github.com/dambor/devplatform/blob/master/png/argocd-pipeline.png)

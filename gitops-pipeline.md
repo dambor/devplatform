@@ -32,4 +32,6 @@ argocd app create petclinic \
 --directory-recurse --sync-policy automated
 ```
 
+3. Login to the ArgoCD web interface and check the status of your pipeline. It should link similar to the one below:
+
 ![argocd-pipe](https://github.com/dambor/devplatform/blob/master/png/argocd-pipeline.png)

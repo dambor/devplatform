@@ -24,7 +24,7 @@ Below a picture of what we're going to implement:
 ## Configuring DevOps Environment
 
 * [Deploy an Image](https://github.com/dambor/devplatform/blob/master/deploy-image.md)
-* [Configuring ArgoCD GitOps Pipeline]()
+* [Configuring ArgoCD GitOps Pipeline](https://github.com/dambor/devplatform/blob/master/gitops-pipeline.md)
 
 ## References
 

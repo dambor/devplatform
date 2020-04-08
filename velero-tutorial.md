@@ -207,3 +207,49 @@ Copy one of the returned IDs `<ID>` and use it with the `aws` CLI tool to search
 
 
 Reference: https://github.com/vmware-tanzu/velero-plugin-for-aws#setup
+
+
+
+## Installing Velero in another cluster
+
+export BUCKET=devplatform-backup
+export REGION=us-west-2
+
+```bash
+velero install \
+    --provider aws \
+    --plugins velero/velero-plugin-for-aws:v1.0.1 \
+    --bucket $BUCKET \
+    --backup-location-config region=$REGION \
+    --snapshot-location-config region=$REGION \
+    --secret-file ./credentials-velero
+```
+
+kubectl get crds
+
+kubectl get volumesnapshotlocations.velero.io -n velero -o yaml
+
+```
+apiVersion: v1
+items:
+- apiVersion: velero.io/v1
+  kind: VolumeSnapshotLocation
+  metadata:
+    creationTimestamp: "2020-04-06T20:47:04Z"
+    generation: 1
+    labels:
+      component: velero
+    name: us-east-1
+    namespace: velero
+    resourceVersion: "657088"
+    selfLink: /apis/velero.io/v1/namespaces/velero/volumesnapshotlocations/default
+    uid: baa94d24-d4f6-4089-bb40-ddf057eb9d1e
+  spec:
+    config:
+      region: us-east-1
+    provider: aws
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
+```

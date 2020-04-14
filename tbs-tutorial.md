@@ -156,6 +156,69 @@ Cluster Builders
 default
 ```
 
+Other useful commands:
+
+```
 pb stack status
 pb store list
 pb builder status default --cluster
+```
+
+## Creating a project
+
+1. Create and target your project first:
+
+```
+pb project create development
+pb project target development
+```
+
+2. Create GitHub and Harbor secrets:
+
+```
+pb secrets registry apply -f tbs/secrets/configure-registry.yaml
+pb secrets git apply -f tbs/secrets/configure-repo.yaml
+```
+
+3. Create an Image (two examples - a Spring Boot one and a PHP one):
+
+```
+pb image apply -f tbs/secrets/petclinic-image.yaml
+```
+
+4. To check the status of the image and the builds do the following:
+
+
+```
+pb image list
+```
+
+Output:
+
+```
+Project: development
+
+Images
+------
+myharbor.gdambor.com/library/petclinic:latest
+```
+ 
+Other commands:
+
+```
+pb image status myharbor.gdambor.com/library/petclinic
+pb image logs myharbor.gdambor.com/library/petclinic -b 1 -f
+```
+
+5. To delete an image:
+```
+pb image delete harbor.shared.tanzu.build/drupal8/druapl8-cnb
+```
+
+## Uninstall TBS
+
+1. To uninstall TBS:
+
+```
+duffle uninstall build-service -c /tmp/credentials.yml -m /tmp/relocated.json
+```

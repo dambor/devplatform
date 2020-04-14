@@ -215,3 +215,6 @@ To verify that Kubed has started, run:
 kubectl annotate secret ingress-cert-${LETSENCRYPT_ENVIRONMENT} -n cert-manager kubed.appscode.com/sync="app=kubed"
 ```
 
+## Testing domain certificate
+
+You can test you domain here: https://www.ssllabs.com/ssltest/index.html

@@ -34,7 +34,7 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}
 4. Set up a DNS Entry for the LoadBalancer retrieved with the command below:
 
 ```
-get svc argocd-server -n argocd
+kubectl get svc argocd-server -n argocd
 ```
 
 5. Login Using The CLI

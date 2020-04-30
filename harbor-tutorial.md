@@ -8,7 +8,7 @@ kubectl label namespace harbor app=kubed
 ```
 
 2. Create Istio Gateways and VirtualServices to allow accessing Harbor from "outside":
-
+```
 cat << EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway

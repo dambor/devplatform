@@ -33,7 +33,7 @@ If you do not have the `aws` CLI locally installed, follow the [user guide][6] t
 
 Velero requires an object storage bucket to store backups in, preferably unique to a single Kubernetes cluster (see the [FAQ][11] for more details). Create an S3 bucket, replacing placeholders appropriately:
 
-```bash
+```
 BUCKET=<YOUR_BUCKET>
 REGION=<YOUR_REGION>
 aws s3api create-bucket \
@@ -41,6 +41,7 @@ aws s3api create-bucket \
     --region $REGION \
     --create-bucket-configuration LocationConstraint=$REGION
 ```
+
 NOTE: us-east-1 does not support a `LocationConstraint`.  If your region is `us-east-1`, omit the bucket configuration:
 
 ```bash

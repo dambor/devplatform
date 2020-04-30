@@ -228,6 +228,12 @@ Output:
 2
 ```
 
+You can retrieve user info using this command:
+
+```
+curl --header "PRIVATE-TOKEN: 1234567890" https://gitlab.gdambor.com/api/v4/users\?username\=myuser | jq
+```
+
 8. Create a personal access token for user myuser:
 
 ```
@@ -390,3 +396,38 @@ To gitlab.gdambor.com:myuser/my-podinfo.git
  * [new tag]         v1.8.0 -> v1.8.0
 ```
 
+## Gitops Repo
+
+
+PROJECT_ID=$(curl -s -k -X POST -H "Content-type: application/json" -H "PRIVATE-TOKEN: 1234567890" https://gitlab.${MY_DOMAIN}/api/v4/projects/user/${GITLAB_USER_ID} -d \
+"{
+  \"user_id\": \"${GITLAB_USER_ID}\",
+  \"name\": \"gitops\",
+  \"description\": \"Gitops Repo\",
+  \"wiki_access_level\": \"disabled\",
+  \"issues_access_level\": \"disabled\",
+  \"builds_access_level\": \"disabled\",
+  \"snippets_access_level\": \"disabled\",
+  \"container-registry-enabled\": false,
+  \"visibility\": \"public\"
+}" | jq -r ".id")
+echo ${PROJECT_ID}
+
+
+13. Clone the podinfo project (https://github.com/dambor/gitops) and push it to the newly created git repository gitops:
+
+```
+export GIT_SSH_COMMAND="ssh -i /tmp/id_rsa_gitlab -o UserKnownHostsFile=/dev/null"
+git clone --bare https://github.com/dambor/gitops /tmp/gitops
+git -C /tmp/gitops push --mirror git@gitlab.${MY_DOMAIN}:myuser/gitops.git
+rm -rf /tmp/gitops
+```
+
+## Create a project on Argo
+
+argocd app create petclinic \
+--repo https://gitlab.gdambor.com/myuser/gitops.git \
+--path petclinic-internal \
+--dest-namespace functions \
+--dest-server https://kubernetes.default.svc \
+--directory-recurse --sync-policy automated

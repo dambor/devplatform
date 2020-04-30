@@ -173,20 +173,27 @@ pb project create development
 pb project target development
 ```
 
-2. Create GitHub and Harbor secrets:
+2. Create a new namespace where you want to deploy the images
+
+```
+kubectl create ns images
+kubectl config set-context --current --namespace=images
+```
+
+3. Create GitHub and Harbor secrets:
 
 ```
 pb secrets registry apply -f tbs/secrets/configure-registry.yaml
 pb secrets git apply -f tbs/secrets/configure-repo.yaml
 ```
 
-3. Create an Image (two examples - a Spring Boot one and a PHP one):
+4. Create an Image (two examples - a Spring Boot one and a PHP one):
 
 ```
-pb image apply -f tbs/secrets/petclinic-image.yaml
+pb image apply -f tbs/secrets/petclinic-image.yaml 
 ```
 
-4. To check the status of the image and the builds do the following:
+5. To check the status of the image and the builds do the following:
 
 
 ```
@@ -200,19 +207,19 @@ Project: development
 
 Images
 ------
-myharbor.gdambor.com/library/petclinic:latest
+myharbor.gdambor.com/spring/petclinic:latest
 ```
  
 Other commands:
 
 ```
-pb image status myharbor.gdambor.com/library/petclinic
-pb image logs myharbor.gdambor.com/library/petclinic -b 1 -f
+pb image status myharbor.gdambor.com/spring/petclinic
+pb image logs myharbor.gdambor.com/spring/petclinic -b 1 -f
 ```
 
-5. To delete an image:
+6. To delete an image:
 ```
-pb image delete harbor.shared.tanzu.build/drupal8/druapl8-cnb
+pb image delete myharbor.gdambor.com/spring/petclinic
 ```
 
 ## Uninstall TBS
